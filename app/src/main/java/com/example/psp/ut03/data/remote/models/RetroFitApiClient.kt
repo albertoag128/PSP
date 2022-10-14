@@ -18,54 +18,42 @@ class RetroFitApiClient {
         apiEndPoints = buildApiEndPoints()
     }
 
-    private fun buildClient(): Retrofit{
+    private fun buildClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(urlEndPoint)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    private fun buildApiEndPoints(): ApiEndPoint{
-       return buildClient().create(ApiEndPoint::class.java)
+    private fun buildApiEndPoints(): ApiEndPoint {
+        return buildClient().create(ApiEndPoint::class.java)
     }
 
 
     fun getAlerts(): AlertsApiModel?{
         val callAlerts = apiEndPoints.getAlerts()
         val response = callAlerts.execute()
-        return if(response.isSuccessful){
+        return if (response.isSuccessful) {
             response.body()
-        }else{
+        } else {
             null
         }
     }
 
 
-    fun getAlert(alert_id:String): DataApiModel?{
+    fun getAlert(alert_id: String): DataApiModel? {
         val callAlert = apiEndPoints.getAlert(alert_id)
         val response = callAlert.execute()
-        return if(response.isSuccessful){
+        return if (response.isSuccessful) {
             response.body()
-        }else{
+        } else {
             null
         }
     }
 
 
-    fun getSingleAlertFromList(alert_id: String, model:AlertsApiModel?): Data?{
-        val alerts = getAlerts()
-        if (alerts != null) {
-            for(a:Data in alerts.data){
-                return if(a.alert_id == alert_id){
-                    a
-                }else{
-                    null
-                }
-            }
-        }
-        return null
-    }
-
+    fun getSingleAlertFromList(alert_id: String, model: AlertsApiModel?): Data? =
+        getAlerts()?.data?.first { alert -> alert.alert_id == alert_id }
 
 
 }

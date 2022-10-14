@@ -38,10 +38,8 @@ class Ut03ex02Activity : AppCompatActivity() {
     }
 
     fun showAlerts(alerts:AlertsApiModel?){
-        if (alerts != null) {
-            for(d: Data in alerts.data){
-                Log.d("@dev", d.toString())
-            }
+        alerts?.let {
+            Log.d("@dev", it.data.toString())
         }
     }
 
